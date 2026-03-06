@@ -98,6 +98,22 @@ def run_flot(pc1: np.ndarray, pc2: np.ndarray, device: torch.device) -> np.ndarr
     print("\n[INFO] Loading FLOT model...")
     # nb_iter controls Sinkhorn iterations — 1 is fast, 3 is more accurate
     model = FLOTModel(nb_iter=1)
+
+    # Load pretrained weights
+    weights_path = Path("FLOT/flot/pretrained_models/model_2048.tar")
+    if weights_path.exists():
+        print(f"[INFO] Loading pretrained weights from {weights_path}")
+        checkpoint = torch.load(str(weights_path), map_location=device)
+        if "model_state_dict" in checkpoint:
+            model.load_state_dict(checkpoint["model_state_dict"])
+        elif "state_dict" in checkpoint:
+            model.load_state_dict(checkpoint["state_dict"])
+        else:
+            model.load_state_dict(checkpoint)
+        print("[INFO] Pretrained weights loaded successfully")
+    else:
+        print("[WARN] No pretrained weights found, using random weights (results will be inaccurate)")
+
     model = model.to(device)
     model.eval()
 

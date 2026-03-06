@@ -5,4 +5,12 @@ __pycache__/
 zivid_frames/
 *.zdf
 *.ply
+*.pcd
+*.xyz
+*.csv
+*.txt
+*.bmp
+*.jpg
+*.png
+*.json
 FLOT/
